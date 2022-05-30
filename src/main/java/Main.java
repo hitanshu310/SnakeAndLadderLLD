@@ -1,4 +1,4 @@
-public class Main {
+public class Shubh {
     public static void Main(){
 
     }
