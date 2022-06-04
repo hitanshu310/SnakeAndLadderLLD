@@ -1,12 +1,9 @@
 package Builder;
-import lombok.AccessLevel;
-import lombok.Setter;
 import model.*;
 import java.util.HashMap;
 import java.util.Queue;
 
 public class GameBuilder {
-
     private Board gameBoard;
 
     private int numberOfPlayers;
