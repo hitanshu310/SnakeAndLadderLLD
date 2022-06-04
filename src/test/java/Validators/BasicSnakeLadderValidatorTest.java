@@ -36,18 +36,18 @@ class BasicSnakeLadderValidatorTest {
     }
 
     @Test
-    @DisplayName("Snake where end is greater than start")
+    @DisplayName("Ladder where end is greater than start")
     public void ladderEndGreaterThanStart(){
         Connector ladder = new Connector(3, 5, ConnectorType.LADDER);
-        System.out.println("Snake start : " + ladder.getStart() + " Snake end : " + ladder.getEnd());
+        System.out.println("Ladder start : " + ladder.getStart() + " Ladder end : " + ladder.getEnd());
         assertTrue(this.validator.validate(ladder, null, null));
     }
 
     @Test
-    @DisplayName("Snake where start is greater than end")
+    @DisplayName("Ladder where start is greater than end")
     public void ladderStartGreaterThanEnd(){
         Connector ladder = new Connector(78, 21, ConnectorType.LADDER);
-        System.out.println("Snake start : " + ladder.getStart() + " Snake end : " + ladder.getEnd());
+        System.out.println("Ladder start : " + ladder.getStart() + " Ladder end : " + ladder.getEnd());
         assertFalse(this.validator.validate(ladder, null, null));
     }
 

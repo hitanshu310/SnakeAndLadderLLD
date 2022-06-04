@@ -20,7 +20,6 @@ public class GameLoop {
         builder.setGameBoard(new Board(100));
         builder.setNumberOfPlayers(5);
         builder.setDice(new Dice(2));
-
         gameInitStrategy = new ConcreteAutoGameInitStrategy();
         ArrayList<IValidate> validators = new ArrayList<>();
         validators.add(new NoMultipleConnectorsAtOneSpotValidator());
