@@ -28,6 +28,10 @@ public class GameBuilder {
         return numLadders;
     }
 
+    public int getBoardSize(){
+        return gameBoard.getSize();
+    }
+
     public Game getGameInstance(){
         return new Game(this.gameBoard,this.numberOfPlayers, this.playerQueue, this.dice, this.snakes, this.ladders, this.numSnakes, this.numLadders);
     }
