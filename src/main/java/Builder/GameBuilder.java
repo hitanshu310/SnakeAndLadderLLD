@@ -55,4 +55,10 @@ public class GameBuilder {
     public void setLadders(HashMap<Integer, Connector> ladders) {
         this.ladders = ladders;
     }
+    public void setNumberOfLadders(int numLadders) {
+        this.numLadders = numLadders;
+    }
+    public void setNumberOfSnakes(int numSnakes) {
+        this.numSnakes = numSnakes;
+    }
 }
