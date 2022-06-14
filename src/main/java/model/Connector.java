@@ -1,8 +1,10 @@
 package model;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 
+@Data
 public class Connector {
 
     private int start;
@@ -12,30 +14,6 @@ public class Connector {
     public Connector(int start, int end, ConnectorType connectorType) {
         this.start = start;
         this.end = end;
-        this.connectorType = connectorType;
-    }
-
-    public int getStart() {
-        return start;
-    }
-
-    public void setStart(int start) {
-        this.start = start;
-    }
-
-    public int getEnd() {
-        return end;
-    }
-
-    public void setEnd(int end) {
-        this.end = end;
-    }
-
-    public ConnectorType getConnectorType() {
-        return connectorType;
-    }
-
-    public void setConnectorType(ConnectorType connectorType) {
         this.connectorType = connectorType;
     }
 }

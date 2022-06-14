@@ -1,21 +1,30 @@
 package model;
 
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
+@Data
 public class Player {
 
     private final String playerName;
 
-    @Setter
     private int location = 0;
 
-    @Setter
-    private boolean won = false;
+    private boolean finished;
 
     public Player(String playerName) {
         this.playerName = playerName;
+        this.finished = false;
     }
+
+    public boolean getFinished(){
+        return this.finished;
+    }
+
+    public void setFinished(boolean finished){
+        this.finished = finished;
+    }
+
 }

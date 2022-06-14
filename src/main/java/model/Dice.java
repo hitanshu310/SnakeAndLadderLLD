@@ -1,15 +1,13 @@
 package model;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 
 
+@Data
 public class Dice {
 
     private int numberOfDice;
-
-    public int getNumberOfDice() {
-        return numberOfDice;
-    }
 
     public int roll(){
         int sum = 0;
