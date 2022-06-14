@@ -9,6 +9,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 public class ConcreteAutoGameInitStrategy implements GameInitStrategy {
+
+    HashMap<Integer, Connector> snakes = new HashMap<>();
+    HashMap<Integer, Connector> ladders = new HashMap<>();
     @Override
     public GameBuilder initializeGame(GameBuilder gameBuilder, ValidatorFacade validatorFacade) {
 
@@ -18,80 +21,53 @@ public class ConcreteAutoGameInitStrategy implements GameInitStrategy {
         return gameBuilder;
     }
 
-    @Override
-    public HashMap<Integer, Connector> initializeSnakes(GameBuilder gameBuilder, ValidatorFacade validatorFacade) {
 
-        HashMap<Integer, Connector> snakes = new HashMap<>();
-
+    private HashMap<Integer, Connector> initializeSnakes(GameBuilder gameBuilder, ValidatorFacade validatorFacade) {
         /*
         Assuming boardSize = 100
         Snakes: start-> (2,99) ; end-> (1, start-1)
         Ladders: start-> (1,99) ; end-> (start+1,100)
          */
-
-        HashSet<Integer> startPositions = new HashSet<>();
-        HashSet<Integer> endPositions = new HashSet<>();
-
         int start, end;
         int snakeMinStart = 2;
 
         for (int i = 0; i < gameBuilder.getNumSnakes(); i++) {
 
             start = (int) (Math.random() * (gameBuilder.getBoardSize() - snakeMinStart) + snakeMinStart);
-            while (startPositions.contains(start) || endPositions.contains(start))
-                start = (int) (Math.random() * (gameBuilder.getBoardSize() - snakeMinStart) + snakeMinStart);
-
-            startPositions.add(start);
-
             end = (int) (Math.random() * (start - 1) + 1);
-            while (startPositions.contains(end))
-                end = (int) (Math.random() * (start - 1) + 1);
-
-            endPositions.add(end);
-
-
             Connector snake = new Connector(start, end, ConnectorType.SNAKE);
-            snakes.put(start, snake);
+            if (validatorFacade.getFirstValidator().validate(snake, this.snakes, this.ladders))
+                snakes.put(snake.getStart(), snake);
+            else
+            {
+                System.out.println("Invalid Snake");
+                i--;
+            }
         }
-
         return snakes;
     }
 
-    @Override
-    public HashMap<Integer, Connector> initializeLadders(GameBuilder gameBuilder, ValidatorFacade validatorFacade) {
-
-        HashMap<Integer, Connector> ladders = new HashMap<>();
-
+    private HashMap<Integer, Connector> initializeLadders(GameBuilder gameBuilder, ValidatorFacade validatorFacade) {
         /*
         Assuming boardSize = 100
         Snakes: start-> (2,99) ; end-> (1, start-1)
         Ladders: start-> (1,99) ; end-> (start+1,100)
          */
-
-        HashSet<Integer> startPositions = new HashSet<>();
-        HashSet<Integer> endPositions = new HashSet<>();
-
         int start, end;
 
         for (int i = 0; i < gameBuilder.getNumLadders(); i++) {
 
             start = (int) (Math.random() * (gameBuilder.getBoardSize() - 1) + 1);
-            while (startPositions.contains(start) || endPositions.contains(start))
-                start = (int) (Math.random() * (gameBuilder.getBoardSize() - 1) + 1);
-
-            startPositions.add(start);
-
             end = (int) (Math.random() * (gameBuilder.getBoardSize() - start) + start + 1);
-            while (startPositions.contains(end))
-                end = (int) (Math.random() * (gameBuilder.getBoardSize() - start) + start + 1);
-
-            endPositions.add(end);
-
-
             Connector ladder = new Connector(start, end, ConnectorType.LADDER);
-            ladders.put(start, ladder);
+            if (validatorFacade.getFirstValidator().validate(ladder, this.snakes, this.ladders))
+                ladders.put(ladder.getStart(), ladder);
+            else
+            {
+                System.out.println("Invalid Ladder");
+                i--;
+            }
         }
-
         return ladders;
     }
 }

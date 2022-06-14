@@ -10,6 +10,8 @@ import java.util.HashSet;
 import java.util.Scanner;
 
 public class ConcreteManualGameInitStrategy implements GameInitStrategy{
+    HashMap<Integer, Connector> snakes = new HashMap<>();
+    HashMap<Integer, Connector> ladders = new HashMap<>();
 
     @Override
     public GameBuilder initializeGame(GameBuilder gameBuilder, ValidatorFacade validatorFacade) {
@@ -20,21 +22,15 @@ public class ConcreteManualGameInitStrategy implements GameInitStrategy{
         return gameBuilder;
     }
 
-    @Override
-    public HashMap<Integer, Connector> initializeSnakes(GameBuilder gameBuilder, ValidatorFacade validatorFacade) {
+
+    private HashMap<Integer, Connector> initializeSnakes(GameBuilder gameBuilder, ValidatorFacade validatorFacade) {
 
         Scanner sc = new Scanner(System.in);
-        HashMap<Integer, Connector> snakes = new HashMap<>();
-
         /*
         Assuming boardSize = 100
         Snakes: start-> (2,99) ; end-> (1, start-1)
         Ladders: start-> (1,99) ; end-> (start+1,100)
          */
-
-        HashSet<Integer> startPositions = new HashSet<>();
-        HashSet<Integer> endPositions = new HashSet<>();
-
         int start, end;
         int snakeMinStart = 2;
 
@@ -45,12 +41,8 @@ public class ConcreteManualGameInitStrategy implements GameInitStrategy{
 
                 if (start < snakeMinStart || start >= gameBuilder.getBoardSize())
                     System.out.println("Out of Range");
-                else if (startPositions.contains(start) || endPositions.contains(start))
-                    System.out.println("Value Already Used");
-                else {
-                    startPositions.add(start);
+                else
                     break;
-                }
             }
 
             while(true) {
@@ -58,27 +50,27 @@ public class ConcreteManualGameInitStrategy implements GameInitStrategy{
 
                 if (end < 1 || end >= start)
                     System.out.println("Out of Range");
-                else if (startPositions.contains(start))
-                    System.out.println("Value Already Used");
-                else {
-                    startPositions.add(start);
+                else
                     break;
-                }
             }
 
             Connector snake = new Connector(start, end, ConnectorType.SNAKE);
-            snakes.put(start, snake);
+            if (validatorFacade.getFirstValidator().validate(snake, this.snakes, this.ladders))
+                snakes.put(snake.getStart(), snake);
+            else
+            {
+                System.out.println("Invalid Snake");
+                i--;
+            }
         }
-
+        sc.close();
         return snakes;
     }
 
-    @Override
-    public HashMap<Integer, Connector> initializeLadders(GameBuilder gameBuilder, ValidatorFacade validatorFacade) {
+
+    private HashMap<Integer, Connector> initializeLadders(GameBuilder gameBuilder, ValidatorFacade validatorFacade) {
 
         Scanner sc = new Scanner(System.in);
-        HashMap<Integer, Connector> ladders = new HashMap<>();
-
         /*
         Assuming boardSize = 100
         Snakes: start-> (2,99) ; end-> (1, start-1)
@@ -97,12 +89,8 @@ public class ConcreteManualGameInitStrategy implements GameInitStrategy{
 
                 if (start < 1 || start >= gameBuilder.getBoardSize())
                     System.out.println("Out of Range");
-                else if (startPositions.contains(start) || endPositions.contains(start))
-                    System.out.println("Value Already Used");
-                else {
-                    startPositions.add(start);
+                else
                     break;
-                }
             }
 
             while(true) {
@@ -110,18 +98,20 @@ public class ConcreteManualGameInitStrategy implements GameInitStrategy{
 
                 if (end <= start || end > gameBuilder.getBoardSize())
                     System.out.println("Out of Range");
-                else if (startPositions.contains(start))
-                    System.out.println("Value Already Used");
-                else {
-                    startPositions.add(start);
+                else
                     break;
-                }
             }
 
-            Connector ladder = new Connector(start, end, ConnectorType.SNAKE);
-            ladders.put(start, ladder);
+            Connector ladder = new Connector(start, end, ConnectorType.LADDER);
+            if (validatorFacade.getFirstValidator().validate(ladder, this.snakes, this.ladders))
+                ladders.put(ladder.getStart(), ladder);
+            else
+            {
+                System.out.println("Invalid Ladder");
+                i--;
+            }
         }
-
+        sc.close();
         return ladders;
     }
 }

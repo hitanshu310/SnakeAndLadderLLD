@@ -10,7 +10,4 @@ public interface GameInitStrategy {
 
     public GameBuilder initializeGame(GameBuilder gameBuilder, ValidatorFacade validatorFacade);
 
-    public HashMap<Integer, Connector> initializeSnakes(GameBuilder gameBuilder, ValidatorFacade validatorFacade);
-
-    public HashMap<Integer, Connector> initializeLadders(GameBuilder gameBuilder, ValidatorFacade validatorFacade);
 }
