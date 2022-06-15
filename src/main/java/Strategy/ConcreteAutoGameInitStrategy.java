@@ -15,14 +15,15 @@ public class ConcreteAutoGameInitStrategy implements GameInitStrategy {
     @Override
     public GameBuilder initializeGame(GameBuilder gameBuilder, ValidatorFacade validatorFacade) {
 
-        gameBuilder.setLadders(initializeLadders(gameBuilder, validatorFacade));
-        gameBuilder.setSnakes(initializeSnakes(gameBuilder, validatorFacade));
-
+        initializeLadders(gameBuilder, validatorFacade);
+        gameBuilder.setLadders(this.ladders);
+        initializeSnakes(gameBuilder, validatorFacade);
+        gameBuilder.setSnakes(this.snakes);
         return gameBuilder;
     }
 
 
-    private HashMap<Integer, Connector> initializeSnakes(GameBuilder gameBuilder, ValidatorFacade validatorFacade) {
+    private void initializeSnakes(GameBuilder gameBuilder, ValidatorFacade validatorFacade) {
         /*
         Assuming boardSize = 100
         Snakes: start-> (2,99) ; end-> (1, start-1)
@@ -40,14 +41,14 @@ public class ConcreteAutoGameInitStrategy implements GameInitStrategy {
                 snakes.put(snake.getStart(), snake);
             else
             {
+                System.out.println("Snake start " + snake.getStart() + "Snake End " + snake.getEnd());
                 System.out.println("Invalid Snake");
                 i--;
             }
         }
-        return snakes;
     }
 
-    private HashMap<Integer, Connector> initializeLadders(GameBuilder gameBuilder, ValidatorFacade validatorFacade) {
+    private void initializeLadders(GameBuilder gameBuilder, ValidatorFacade validatorFacade) {
         /*
         Assuming boardSize = 100
         Snakes: start-> (2,99) ; end-> (1, start-1)
@@ -64,10 +65,10 @@ public class ConcreteAutoGameInitStrategy implements GameInitStrategy {
                 ladders.put(ladder.getStart(), ladder);
             else
             {
+                System.out.println("Ladder start " + ladder.getStart() + "Ladder End " + ladder.getEnd());
                 System.out.println("Invalid Ladder");
                 i--;
             }
         }
-        return ladders;
     }
 }
